@@ -19,11 +19,12 @@ shopt -s nullglob
 
 
 #SET TO TRUE and MODIFY DOMAIN/EMAIL for https
-USE_HTTPS=/bin/false
+USE_HTTPS=/bin/true
 #ACME_DOMAIN_NAME="35.181.109.46.nip.io"
-ACME_DOMAIN_NAME="localhost"
+# ACME_DOMAIN_NAME="localhost"
+ACME_DOMAIN_NAME="efactoryvfos.icelab.cloud"
 ACME_EXTERNAL_IP=127.0.0.1
-ACME_EMAIL="ludo@almende.org"
+ACME_EMAIL="james.tryand@informationcatalyst.com"
 
 
 CURRENT_DIR=$(pwd)
@@ -124,7 +125,7 @@ services:
     restart: "unless-stopped"
     depends_on:
       - registry
-    command: ["-b", "0.0.0.0","-Dkeycloak.profile.feature.docker=enabled", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=singleFile", "-Dkeycloak.migration.file=/opt/jboss/vf-OS-realm.json", "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"]
+    command: ["-b", "0.0.0.0","-Dkeycloak.profile.feature.docker=enabled"]
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=vf-OS-test
@@ -214,7 +215,7 @@ services:
     environment:
       - CHE_SINGLE_PORT=true
       - CHE_PORT=8081
-      - CHE_HOST=$ACME_DOMAIN_NAME
+      - CHE_HOST=che.efactoryvfos.icelab.cloud
       - CHE_DOCKER_IP_EXTERNAL=$ACME_EXTERNAL_IP
       - CHE_WORKSPACE_STORAGE=$CURRENT_DIR/.persist/che_data/workspaces/
 #      - CHE_INFRA_DOCKER_URL__REWRITER=singleport
@@ -222,8 +223,8 @@ services:
     labels:
       - vf-OS=true
       - vf-OS.name=vf-Studio
-      - "vf-OS.description=The vf-OS Studio, an IDE and toolchain for developing Apps and vf-OS Assets"
-      - vf-OS.frontendUri=http://$ACME_DOMAIN_NAME:8081/
+      - vf-OS.description="The vf-OS Studio, an IDE and toolchain for developing Apps and vf-OS Assets"
+      - vf-OS.frontendUri=https://che.efactoryvfos.icelab.cloud/
       - "traefik.enable=true"
       - "traefik.frontend.entryPoints=che"
       - "traefik.port=8081"
